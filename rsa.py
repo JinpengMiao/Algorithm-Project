@@ -46,7 +46,7 @@ class Rsa:
             reserve_size = self.block_reversed_size
             key_size = rsa_key.size_in_bits()
             if (key_size % 8) != 0:
-                raise RuntimeError('RSA 密钥长度非法')
+                raise RuntimeError('RSA length error')
             
             # private key to decrypt
             if rsa_key.has_private():
@@ -54,7 +54,7 @@ class Rsa:
             
             bs = int(key_size / 8) - reserve_size
         except Exception as err:
-            print('计算加解密数据块大小出错', rsa_key, err)
+            print('error on calculating the size of data block', rsa_key, err)
         return bs
     
     def block_data(self, data, rsa_key):
@@ -75,7 +75,7 @@ def enc_bytes(self, data, key=None):
             cur_text = cipher.encrypt(dat)
             text += cur_text
     except Exception as err:
-        print('RSA加密失败', data, err)
+        print('RSA encryption fail', data, err)
     return text
 
 # decrypt
@@ -91,10 +91,10 @@ def dec_bytes(self, data, key=None):
             if type(self.ciper_lib) == Cipher.PKCS1_OAEP:
                 cur_text = cipher.decrypt(dat)
             else:
-                cur_text = cipher.decrypt(dat, '解密异常')
+                cur_text = cipher.decrypt(dat, 'Decryption exception error')
             text += cur_text
     except Exception as err:
-        print('RSA解密失败', data, err)
+        print('RSA decryption error', data, err)
     return text
 
 # RSA signature
@@ -108,7 +108,7 @@ def sign_bytes(self, data, key=None):
         h = self.hash_lib.new(data)
         signature = self.sign_lib.new(rsa_key).sign(h)
     except Exception as err:
-        print('RSA签名失败', '', err)
+        print('RSA signature fail', '', err)
     return signature
 
 # RSA signature examine
